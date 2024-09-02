@@ -4,11 +4,9 @@ __license__ = "MIT"
 
 import json
 import os
-import re
 
 import requests
 from datetime import datetime, timedelta
-from bs4 import BeautifulSoup
 
 # Define the headers as a constant variable
 HEADERS = {

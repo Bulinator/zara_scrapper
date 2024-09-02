@@ -2,6 +2,9 @@ __author__ = "Bulinator"
 __version__ = "0.1.0"
 __license__ = "MIT"
 
+import re
+
+from currency_converter import CurrencyConverter
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -12,6 +15,7 @@ import json
 article_id = input("Enter the article ID: ")
 if not article_id:
     article_id = "4387/249"
+
 
 # Define the headers as a constant variable
 user_agent = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -24,9 +28,20 @@ options.add_argument(f"user-agent={user_agent}")
 
 # Initialize the Selenium WebDriver (assuming Chrome)
 driver = webdriver.Chrome(options=options)
+
+
 # Maximize the browser window
 # driver.maximize_window()
 
+def is_valid_reference(reference):
+    # Define the regex pattern for "number/number"
+    pattern = r'^\d+/\d+$'
+
+    # Use re.match to check if the reference matches the pattern
+    if re.match(pattern, reference):
+        return True
+
+    return False
 
 def handle_gdpr_cookie():
     try:
@@ -55,6 +70,11 @@ def time_to_sleep_a_bit(sleeping_time=5):
     time.sleep(sleeping_time)
 
 
+def convert_currency(amount, from_currency, to_currency="EUR"):
+    c = CurrencyConverter()
+    return c.convert(amount, from_currency, to_currency)
+
+
 def get_price_and_name():
     name_element = driver.find_element(By.CSS_SELECTOR, ".product-detail-info__header-name")
     print(f"Article name: {name_element.text}")
@@ -62,7 +82,15 @@ def get_price_and_name():
         By.XPATH,
         "//div[@class='product-detail-info__price-amount price']//span[@class='money-amount__main']"
     )
-    print(f"Price: {price_element.text}")
+    if price_element.text:
+        parts = price_element.text.split()
+        if len(parts) != 2:
+            raise ValueError("Input string must be in the format '<amount> <currency>'")
+
+        # Extract the numeric part and the currency part
+        amount, currency = parts
+        # converted_amount = convert_currency(int(amount.replace(',', '')), currency)
+        print(f"Price original: {price_element.text} is: [WORK IN PROGRESS] €")
 
 
 def get_sizes_and_price(country_name):
