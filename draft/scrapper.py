@@ -16,7 +16,6 @@ article_id = input("Enter the article ID: ")
 if not article_id:
     article_id = "4387/249"
 
-
 # Define the headers as a constant variable
 user_agent = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
               "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36")
@@ -42,6 +41,7 @@ def is_valid_reference(reference):
         return True
 
     return False
+
 
 def handle_gdpr_cookie():
     try:
@@ -157,7 +157,7 @@ def check_article_availability(countries, article_name):
 
 
 def main():
-    filepath = "./data/zara_urls.json"
+    filepath = "../data/zara_urls.json"
     with open(filepath, 'r') as file:
         countries = json.load(file)
     # Get user input for the article ID

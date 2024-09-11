@@ -65,8 +65,8 @@ def is_file_older_than_one_month(filepath):
 
 
 def main():
-    initial_json_filepath = "./data/world.json"
-    zara_json_filepath = "./data/zara_urls.json"
+    initial_json_filepath = "../data/world.json"
+    zara_json_filepath = "../data/zara_urls.json"
     if is_file_older_than_one_month(zara_json_filepath):
         print("The Zara URL file is older than one month or does not exist. Updating it.")
         country_data = load_initial_json(initial_json_filepath)
